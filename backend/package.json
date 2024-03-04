@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@types/node": "^20.11.24",
-    "fastify": "^4.26.2"
+    "fastify": "^4.26.2",
+    "firebase-admin": "^12.0.0"
   }
 }
