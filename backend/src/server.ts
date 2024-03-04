@@ -10,13 +10,18 @@ admin.initializeApp({
 
 // Search all items from the collection products
 app.get('/products', async (req: FastifyRequest, res: FastifyReply) => {
-	const refCollectionProducts = admin.firestore().collection('products')
-	const snapshop = await refCollectionProducts.get()
-	const products = snapshop.docs.map((doc) => ({
-		...doc.data(),
-		uid: doc.id,
-	}))
-	res.send(products)
+	try {
+		const refCollectionProducts = admin.firestore().collection('products')
+		const snapshop = await refCollectionProducts.get()
+		const products = snapshop.docs.map((doc) => ({
+			...doc.data(),
+			uid: doc.id,
+		}))
+		res.send(products)
+	} catch (error) {
+		console.error(error)
+		return res.send({ message: 'Error fetching products' })
+	}
 })
 
 // creates a new product with name, price and stock
