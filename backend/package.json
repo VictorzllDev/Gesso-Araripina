@@ -18,6 +18,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@types/node": "^20.11.24"
+    "@types/node": "^20.11.24",
+    "fastify": "^4.26.2"
   }
 }
