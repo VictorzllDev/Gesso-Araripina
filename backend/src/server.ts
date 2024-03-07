@@ -47,6 +47,25 @@ app.post('/products', async (req: FastifyRequest, res: FastifyReply) => {
 	}
 })
 
+// delete product
+app.delete(
+	'/products/:uid',
+	async (
+		req: FastifyRequest<{ Params: { uid: string } }>,
+		res: FastifyReply,
+	) => {
+		const { uid } = req.params
+
+		try {
+			const refCollectionProducts = admin.firestore().collection('products')
+			await refCollectionProducts.doc(uid).delete()
+			res.send({ message: `uid document: ${uid}, deleted successfully` })
+		} catch {
+			res.send({ message: 'error in deleting document' })
+		}
+	},
+)
+
 app.listen({ port: 3333 }, (err, address) => {
 	if (err) {
 		console.error(err)
