@@ -25,27 +25,30 @@ app.get('/products', async (req: FastifyRequest, res: FastifyReply) => {
 })
 
 // creates a new product with name, price and stock
-app.post('/products', async (req: FastifyRequest, res: FastifyReply) => {
-	try {
-		const { name, price, stock } = req.body as ICreateProducts
+app.post(
+	'/products',
+	async (req: FastifyRequest<{ Body: ICreateProducts }>, res: FastifyReply) => {
+		try {
+			const { name, price, stock } = req.body
 
-		// check if the types of variables are correct
-		if (
-			typeof name !== 'string' ||
-			typeof price !== 'number' ||
-			typeof stock !== 'number'
-		) {
-			throw new Error()
+			// check if the types of variables are correct
+			if (
+				typeof name !== 'string' ||
+				typeof price !== 'number' ||
+				typeof stock !== 'number'
+			) {
+				throw new Error()
+			}
+
+			// making connection and adding data
+			const refCollectionProducts = admin.firestore().collection('products')
+			await refCollectionProducts.add({ name, price, stock })
+			res.send({ message: 'create com sucess' })
+		} catch {
+			res.send({ mesage: 'error in creating the product' })
 		}
-
-		// making connection and adding data
-		const refCollectionProducts = admin.firestore().collection('products')
-		await refCollectionProducts.add({ name, price, stock })
-		res.send({ message: 'create com sucess' })
-	} catch {
-		res.send({ mesage: 'error in creating the product' })
-	}
-})
+	},
+)
 
 // delete product
 app.delete(
